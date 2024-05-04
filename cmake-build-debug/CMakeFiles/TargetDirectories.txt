@@ -1,0 +1,3 @@
+C:/Users/ptmff/CLionProjects/Coursework/cmake-build-debug/CMakeFiles/Coursework.dir
+C:/Users/ptmff/CLionProjects/Coursework/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/ptmff/CLionProjects/Coursework/cmake-build-debug/CMakeFiles/rebuild_cache.dir
