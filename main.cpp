@@ -3,6 +3,7 @@
 #include <vector>
 #include <algorithm>
 #include <conio.h>
+#include <fstream>
 
 using namespace std;
 
@@ -159,7 +160,7 @@ public:
 	Sensor sensors[6]{Sensor(), Sensor(), Sensor(), Sensor(), Sensor(), Sensor()};
 	Drive drivers[10]{Drive(), Drive(), Drive(), Drive(), Drive(), Drive(), Drive(), Drive(), Drive(), Drive()};
 	Container containers[5]{Container(&sensors[0], &drivers[0]), Container(&sensors[1], &drivers[4]), Container(&sensors[2], &drivers[5]), Container(&sensors[3], &drivers[7]), Container(&sensors[4], &drivers[9])};
-	InOut_container inout_containers[1]{InOut_container(&sensors[5], &drivers[5], &drivers[4])};
+	InOut_container inout_containers[1]{InOut_container(&sensors[5], &drivers[3], &drivers[2])};
 	Drive lines[2]{Drive(), Drive()};
 	Line_sensor line_sensors[8]{Line_sensor(&lines[0]), Line_sensor(&lines[0]), Line_sensor(&lines[1]), Line_sensor(&lines[1]), Line_sensor(&lines[1]), Line_sensor(&lines[1]), Line_sensor(&lines[1]), Line_sensor(&lines[1])};
 
@@ -181,80 +182,140 @@ public:
 };
 
 class Controller {
-private:
-	class View {
-	public:
-		void show_state(Model* machine){
-
-		}
-	};
 public:
 	Model* machine;
-	View* display;
+
+	void configure(ifstream &in){
+		bool data;
+		in >> data;
+		if (data) machine->lines[0].activate();
+		else machine->lines[0].deactivate();
+		in >> data;
+		if (data) machine->lines[1].activate();
+		else machine->lines[1].deactivate();
+		in >> data;
+		machine->sensors[0].set_state(data);
+		in >> data;
+		if (data) machine->drivers[0].activate();
+		else machine->drivers[0].deactivate();
+		in >> data;
+		machine->line_sensors[0].set_state(data);
+		in >> data;
+		if (data) machine->drivers[1].activate();
+		else machine->drivers[1].deactivate();
+		in >> data;
+		machine->line_sensors[1].set_state(data);
+		in >> data;
+		if (data) machine->drivers[2].activate();
+		else machine->drivers[2].deactivate();
+		in >> data;
+		machine->sensors[1].set_state(data);
+		in >> data;
+		if (data) machine->drivers[4].activate();
+		else machine->drivers[4].deactivate();
+		in >> data;
+		machine->line_sensors[2].set_state(data);
+		in >> data;
+		machine->sensors[5].set_state(data);
+		in >> data;
+		if (data) machine->drivers[3].activate();
+		else machine->drivers[3].deactivate();
+		in >> data;
+		machine->line_sensors[3].set_state(data);
+		in >> data;
+		machine->sensors[2].set_state(data);
+		in >> data;
+		if (data) machine->drivers[5].activate();
+		else machine->drivers[5].deactivate();
+		in >> data;
+		machine->line_sensors[4].set_state(data);
+		in >> data;
+		if (data) machine->drivers[6].activate();
+		else machine->drivers[6].deactivate();
+		in >> data;
+		machine->line_sensors[5].set_state(data);
+		in >> data;
+		machine->sensors[3].set_state(data);
+		in >> data;
+		if (data) machine->drivers[7].activate();
+		else machine->drivers[7].deactivate();
+		in >> data;
+		machine->line_sensors[6].set_state(data);
+		in >> data;
+		if (data) machine->drivers[8].activate();
+		else machine->drivers[8].deactivate();
+		in >> data;
+		machine->line_sensors[7].set_state(data);
+		in >> data;
+		machine->sensors[4].set_state(data);
+		in >> data;
+		if (data) machine->drivers[9].activate();
+		else machine->drivers[9].deactivate();
+	}
 
 	void start(){
 		try {
-			cout << "                     |-------|" << "\n" << "                     |       |" << "\n" << " "<<termcolor::green<<"________"<<termcolor::white<<"         __  \\_____/  __" << "\n" << ""<<termcolor::green<<"|        |"<<termcolor::white<<"       |  |    |    |  |" << "\n" << ""<<termcolor::green<<"|        |"<<termcolor::white<<"       |  |    |    |  |" << "\n" << termcolor::green <<"|   1    |" << termcolor::white<< "       |  |    |    |  |" << "\n" << termcolor::green<<"|________|"<<termcolor::white<<"       |__|    |    |__|" << "\n" << termcolor::green<<" \\______ "<<termcolor::white<<"         ::    ###    ::        ___" << "\n" << "                  ::           ::    _______\\" << "\n" << " __________________________________ |        |" << "\n" << "/                                  \\|        |" << "\n" << "\\__________________________________/|   2    |                         |-------|                      |-------|" << "\n" << "                                    |________|                         |       |                      |       |" << "\n" << " ________                  __        \\______      __    ________    __  \\_____/  __    ________    __  \\_____/  __" << "\n" << "|        |                |  |                   |  |  |        |  |  |    |    |  |  |        |  |  |    |    |  |" << "\n" << "|        |                |  |                   |  |  |        |  |  |    |    |  |  |        |  |  |    |    |  |" << "\n" << "|   3    |                |  |                   |  |  |   4    |  |  |    |    |  |  |   5    |  |  |    |    |  |" << "\n" << "|________|                |__|                   |__|  |________|  |__|    |    |__|  |________|  |__|    |    |__|" << "\n" << " \\______                   ::                     ::    \\______     ::    ###    ::    \\______     ::    ###    ::  ______" << "\n" << "                           ::                     ::                ::           ::                ::           :: _______\\" << "\n" << " _________________________________________________________________________________________________________________|        |" << "\n" << "/                                                                                                                 |        |" << "\n" << "\\_________________________________________________________________________________________________________________|   6    |" << "\n" << "                                                                                                                  |________|" << "\n";
-			cout << "\nConfigure containers:\n\n";
-			cout << "    Container #1:\n";
-			cout << "        Amount of free space:  ";
-			cin >> input;
-			machine->containers[0].set_space(stoi(input));
-			cout << "        How many objects should be put inside:  ";
-			cin >> input;
-			machine->containers[0].put(stoi(input));
-			system("cls");
-
-			cout << "                     |-------|" << "\n" << "                     |       |" << "\n" << " ________         __  \\_____/  __" << "\n" << "|        |       |  |    |    |  |" << "\n" << "|        |       |  |    |    |  |" << "\n" << "|   1    |       |  |    |    |  |" << "\n" << "|________|       |__|    |    |__|" << "\n" << " \\______          ::    ###    ::        "<<termcolor::green<<"___"<< termcolor::white << "\n" << "                  ::           ::    "<<termcolor::green<<"_______\\"<< termcolor::white << "\n" << " __________________________________ "<<termcolor::green<<"|        |"<< termcolor::white << "\n" << "/                                  \\"<<termcolor::green<<"|        |"<< termcolor::white << "\n" << "\\__________________________________/"<<termcolor::green<<"|   2    |"<< termcolor::white <<"                         |-------|                      |-------|" << "\n" << "                                   "<<termcolor::green<<" |________| "<<termcolor::white<<"                        |       |                      |       |" << "\n" << " ________                  __        "<<termcolor::green<<"\\______  "<<termcolor::white<<"    __    ________    __  \\_____/  __    ________    __  \\_____/  __" << "\n" << "|        |                |  |                   |  |  |        |  |  |    |    |  |  |        |  |  |    |    |  |" << "\n" << "|        |                |  |                   |  |  |        |  |  |    |    |  |  |        |  |  |    |    |  |" << "\n" << "|   3    |                |  |                   |  |  |   4    |  |  |    |    |  |  |   5    |  |  |    |    |  |" << "\n" << "|________|                |__|                   |__|  |________|  |__|    |    |__|  |________|  |__|    |    |__|" << "\n" << " \\______                   ::                     ::    \\______     ::    ###    ::    \\______     ::    ###    ::  ______" << "\n" << "                           ::                     ::                ::           ::                ::           :: _______\\" << "\n" << " _________________________________________________________________________________________________________________|        |" << "\n" << "/                                                                                                                 |        |" << "\n" << "\\_________________________________________________________________________________________________________________|   6    |" << "\n" << "                                                                                                                  |________|" << "\n";
-			cout << "\nConfigure containers:\n\n";
-			cout << "    Container #2:\n";
-			cout << "        Amount of free space:  ";
-			cin >> input;
-			machine->inout_containers[0].set_space(stoi(input));
-			system("cls");
-
-			cout << "                     |-------|" << "\n" << "                     |       |" << "\n" << " ________         __  \\_____/  __" << "\n" << "|        |       |  |    |    |  |" << "\n" << "|        |       |  |    |    |  |" << "\n" << "|   1    |       |  |    |    |  |" << "\n" << "|________|       |__|    |    |__|" << "\n" << " \\______          ::    ###    ::        ___" << "\n" << "                  ::           ::    _______\\" << "\n" << " __________________________________ |        |" << "\n" << "/                                  \\|        |" << "\n" << "\\__________________________________/|   2    |                         |-------|                      |-------|" << "\n" << "                                    |________|                         |       |                      |       |" << "\n" << termcolor::green <<" ________"<<termcolor::white<<"                  __        \\______      __    ________    __  \\_____/  __    ________    __  \\_____/  __" << "\n" << termcolor::green<<"|        |"<<termcolor::white<<"                |  |                   |  |  |        |  |  |    |    |  |  |        |  |  |    |    |  |" << "\n" << termcolor::green<<"|        |"<<termcolor::white<<"                |  |                   |  |  |        |  |  |    |    |  |  |        |  |  |    |    |  |" << "\n" << termcolor::green<<"|   3    | "<<termcolor::white<<"               |  |                   |  |  |   4    |  |  |    |    |  |  |   5    |  |  |    |    |  |" << "\n" <<termcolor::green<< "|________|"<<termcolor::white<<"                |__|                   |__|  |________|  |__|    |    |__|  |________|  |__|    |    |__|" << "\n" << termcolor::green<<" \\______"<<termcolor::white<<"                   ::                     ::    \\______     ::    ###    ::    \\______     ::    ###    ::  ______" << "\n" << "                           ::                     ::                ::           ::                ::           :: _______\\" << "\n" << " _________________________________________________________________________________________________________________|        |" << "\n" << "/                                                                                                                 |        |" << "\n" << "\\_________________________________________________________________________________________________________________|   6    |" << "\n" << "                                                                                                                  |________|" << "\n";
-			cout << "\nConfigure containers:\n\n";
-			cout << "    Container #3:\n";
-			cout << "        Amount of free space:  ";
-			cin >> input;
-			machine->containers[1].set_space(stoi(input));
-			cout << "        How many objects should be put inside:  ";
-			cin >> input;
-			machine->containers[1].put(stoi(input));
-			system("cls");
-
-			cout << "                     |-------|" << "\n" << "                     |       |" << "\n" << " ________         __  \\_____/  __" << "\n" << "|        |       |  |    |    |  |" << "\n" << "|        |       |  |    |    |  |" << "\n" << "|   1    |       |  |    |    |  |" << "\n" << "|________|       |__|    |    |__|" << "\n" << " \\______          ::    ###    ::        ___" << "\n" << "                  ::           ::    _______\\" << "\n" << " __________________________________ |        |" << "\n" << "/                                  \\|        |" << "\n" << "\\__________________________________/|   2    |                         |-------|                      |-------|" << "\n" << "                                    |________|                         |       |                      |       |" << "\n" << " ________                  __        \\______      __   "<<termcolor::green<<" ________"<<termcolor::white<<"    __  \\_____/  __    ________    __  \\_____/  __" << "\n" << "|        |                |  |                   |  | "<<termcolor::green<<" |        |"<<termcolor::white<<"  |  |    |    |  |  |        |  |  |    |    |  |" << "\n" << "|        |                |  |                   |  |  "<<termcolor::green<<"|        |"<<termcolor::white<<"  |  |    |    |  |  |        |  |  |    |    |  |" << "\n" << "|   3    |                |  |                   |  | "<<termcolor::green<<" |   4    |"<<termcolor::white<<"  |  |    |    |  |  |   5    |  |  |    |    |  |" << "\n" << "|________|                |__|                   |__| "<<termcolor::green<<" |________| "<<termcolor::white<<" |__|    |    |__|  |________|  |__|    |    |__|" << "\n" << " \\______                   ::                     ::    "<<termcolor::green<<"\\______"<<termcolor::white<<"     ::    ###    ::    \\______     ::    ###    ::  ______" << "\n" << "                           ::                     ::                ::           ::                ::           :: _______\\" << "\n" << " _________________________________________________________________________________________________________________|        |" << "\n" << "/                                                                                                                 |        |" << "\n" << "\\_________________________________________________________________________________________________________________|   6    |" << "\n" << "                                                                                                                  |________|" << "\n";
-			cout << "\nConfigure containers:\n\n";
-			cout << "    Container #4:\n";
-			cout << "        Amount of free space:  ";
-			cin >> input;
-			machine->containers[2].set_space(stoi(input));
-			cout << "        How many objects should be put inside:  ";
-			cin >> input;
-			machine->containers[2].put(stoi(input));
-			system("cls");
-
-			cout << "                     |-------|" << "\n" << "                     |       |" << "\n" << " ________         __  \\_____/  __" << "\n" << "|        |       |  |    |    |  |" << "\n" << "|        |       |  |    |    |  |" << "\n" << "|   1    |       |  |    |    |  |" << "\n" << "|________|       |__|    |    |__|" << "\n" << " \\______          ::    ###    ::        ___" << "\n" << "                  ::           ::    _______\\" << "\n" << " __________________________________ |        |" << "\n" << "/                                  \\|        |" << "\n" << "\\__________________________________/|   2    |                         |-------|                      |-------|" << "\n" << "                                    |________|                         |       |                      |       |" << "\n" << " ________                  __        \\______      __    ________    __  \\_____/  __    "<<termcolor::green<<"________"<<termcolor::white<<"    __  \\_____/  __" << "\n" << "|        |                |  |                   |  |  |        |  |  |    |    |  |  "<<termcolor::green<<"|        | "<<termcolor::white<<" |  |    |    |  |" << "\n" << "|        |                |  |                   |  |  |        |  |  |    |    |  |  "<<termcolor::green<<"|        |"<<termcolor::white<<"  |  |    |    |  |" << "\n" << "|   3    |                |  |                   |  |  |   4    |  |  |    |    |  |  "<<termcolor::green<<"|   5    | "<<termcolor::white<<" |  |    |    |  |" << "\n" << "|________|                |__|                   |__|  |________|  |__|    |    |__| "<<termcolor::green<<" |________| "<<termcolor::white<<" |__|    |    |__|" << "\n" << " \\______                   ::                     ::    \\______     ::    ###    ::  "<<termcolor::green<<"  \\______ "<<termcolor::white<<"    ::    ###    ::  ______" << "\n" << "                           ::                     ::                ::           ::                ::           :: _______\\" << "\n" << " _________________________________________________________________________________________________________________|        |" << "\n" << "/                                                                                                                 |        |" << "\n" << "\\_________________________________________________________________________________________________________________|   6    |" << "\n" << "                                                                                                                  |________|" << "\n";
-			cout << "\nConfigure containers:\n\n";
-			cout << "    Container #5:\n";
-			cout << "        Amount of free space:  ";
-			cin >> input;
-			machine->containers[3].set_space(stoi(input));
-			cout << "        How many objects should be put inside:  ";
-			cin >> input;
-			machine->containers[3].put(stoi(input));
-			system("cls");
-
-			cout << "                     |-------|" << "\n" << "                     |       |" << "\n" << " ________         __  \\_____/  __" << "\n" << "|        |       |  |    |    |  |" << "\n" << "|        |       |  |    |    |  |" << "\n" << "|   1    |       |  |    |    |  |" << "\n" << "|________|       |__|    |    |__|" << "\n" << " \\______          ::    ###    ::        ___" << "\n" << "                  ::           ::    _______\\" << "\n" << " __________________________________ |        |" << "\n" << "/                                  \\|        |" << "\n" << "\\__________________________________/|   2    |                         |-------|                      |-------|" << "\n" << "                                    |________|                         |       |                      |       |" << "\n" << " ________                  __        \\______      __    ________    __  \\_____/  __    ________    __  \\_____/  __" << "\n" << "|        |                |  |                   |  |  |        |  |  |    |    |  |  |        |  |  |    |    |  |" << "\n" << "|        |                |  |                   |  |  |        |  |  |    |    |  |  |        |  |  |    |    |  |" << "\n" << "|   3    |                |  |                   |  |  |   4    |  |  |    |    |  |  |   5    |  |  |    |    |  |" << "\n" << "|________|                |__|                   |__|  |________|  |__|    |    |__|  |________|  |__|    |    |__|" << "\n" << " \\______                   ::                     ::    \\______     ::    ###    ::    \\______     ::    ###    :: "<<termcolor::green<<" ______"<< termcolor::white << "\n" << "                           ::                     ::                ::           ::                ::           :: "<<termcolor::green<<"_______\\"<< termcolor::white << "\n" << " _________________________________________________________________________________________________________________"<<termcolor::green<<"|        |"<< termcolor::white << "\n" << "/                                                                                                                 "<<termcolor::green<<"|        |"<< termcolor::white << "\n" << "\\_________________________________________________________________________________________________________________"<<termcolor::green<<"|   6    |"<< termcolor::white << "\n" << "                                                                                                                  "<<termcolor::green<<"|________|"<< termcolor::white << "\n";
-			cout << "\nConfigure containers:\n\n";
-			cout << "    Container #6:\n";
-			cout << "        Amount of free space:  ";
-			cin >> input;
-			machine->containers[4].set_space(stoi(input));
-			system("cls");
-
 			if (machine->get_mode() == 'a') {
+				cout << "                     |-------|" << "\n" << "                     |       |" << "\n" << " "<<termcolor::green<<"________"<<termcolor::white<<"         __  \\_____/  __" << "\n" << ""<<termcolor::green<<"|        |"<<termcolor::white<<"       |  |    |    |  |" << "\n" << ""<<termcolor::green<<"|        |"<<termcolor::white<<"       |  |    |    |  |" << "\n" << termcolor::green <<"|   1    |" << termcolor::white<< "       |  |    |    |  |" << "\n" << termcolor::green<<"|________|"<<termcolor::white<<"       |__|    |    |__|" << "\n" << termcolor::green<<" \\______ "<<termcolor::white<<"         ::    ###    ::        ___" << "\n" << "                  ::           ::    _______\\" << "\n" << " __________________________________ |        |" << "\n" << "/                                  \\|        |" << "\n" << "\\__________________________________/|   2    |                         |-------|                      |-------|" << "\n" << "                                    |________|                         |       |                      |       |" << "\n" << " ________                  __        \\______      __    ________    __  \\_____/  __    ________    __  \\_____/  __" << "\n" << "|        |                |  |                   |  |  |        |  |  |    |    |  |  |        |  |  |    |    |  |" << "\n" << "|        |                |  |                   |  |  |        |  |  |    |    |  |  |        |  |  |    |    |  |" << "\n" << "|   3    |                |  |                   |  |  |   4    |  |  |    |    |  |  |   5    |  |  |    |    |  |" << "\n" << "|________|                |__|                   |__|  |________|  |__|    |    |__|  |________|  |__|    |    |__|" << "\n" << " \\______                   ::                     ::    \\______     ::    ###    ::    \\______     ::    ###    ::  ______" << "\n" << "                           ::                     ::                ::           ::                ::           :: _______\\" << "\n" << " _________________________________________________________________________________________________________________|        |" << "\n" << "/                                                                                                                 |        |" << "\n" << "\\_________________________________________________________________________________________________________________|   6    |" << "\n" << "                                                                                                                  |________|" << "\n";
+				cout << "\nConfigure containers:\n\n";
+				cout << "    Container #1:\n";
+				cout << "        Amount of free space:  ";
+				cin >> input;
+				machine->containers[0].set_space(stoi(input));
+				cout << "        How many objects should be put inside:  ";
+				cin >> input;
+				machine->containers[0].put(stoi(input));
+				system("cls");
+
+				cout << "                     |-------|" << "\n" << "                     |       |" << "\n" << " ________         __  \\_____/  __" << "\n" << "|        |       |  |    |    |  |" << "\n" << "|        |       |  |    |    |  |" << "\n" << "|   1    |       |  |    |    |  |" << "\n" << "|________|       |__|    |    |__|" << "\n" << " \\______          ::    ###    ::        "<<termcolor::green<<"___"<< termcolor::white << "\n" << "                  ::           ::    "<<termcolor::green<<"_______\\"<< termcolor::white << "\n" << " __________________________________ "<<termcolor::green<<"|        |"<< termcolor::white << "\n" << "/                                  \\"<<termcolor::green<<"|        |"<< termcolor::white << "\n" << "\\__________________________________/"<<termcolor::green<<"|   2    |"<< termcolor::white <<"                         |-------|                      |-------|" << "\n" << "                                   "<<termcolor::green<<" |________| "<<termcolor::white<<"                        |       |                      |       |" << "\n" << " ________                  __        "<<termcolor::green<<"\\______  "<<termcolor::white<<"    __    ________    __  \\_____/  __    ________    __  \\_____/  __" << "\n" << "|        |                |  |                   |  |  |        |  |  |    |    |  |  |        |  |  |    |    |  |" << "\n" << "|        |                |  |                   |  |  |        |  |  |    |    |  |  |        |  |  |    |    |  |" << "\n" << "|   3    |                |  |                   |  |  |   4    |  |  |    |    |  |  |   5    |  |  |    |    |  |" << "\n" << "|________|                |__|                   |__|  |________|  |__|    |    |__|  |________|  |__|    |    |__|" << "\n" << " \\______                   ::                     ::    \\______     ::    ###    ::    \\______     ::    ###    ::  ______" << "\n" << "                           ::                     ::                ::           ::                ::           :: _______\\" << "\n" << " _________________________________________________________________________________________________________________|        |" << "\n" << "/                                                                                                                 |        |" << "\n" << "\\_________________________________________________________________________________________________________________|   6    |" << "\n" << "                                                                                                                  |________|" << "\n";
+				cout << "\nConfigure containers:\n\n";
+				cout << "    Container #2:\n";
+				cout << "        Amount of free space:  ";
+				cin >> input;
+				machine->inout_containers[0].set_space(stoi(input));
+				system("cls");
+
+				cout << "                     |-------|" << "\n" << "                     |       |" << "\n" << " ________         __  \\_____/  __" << "\n" << "|        |       |  |    |    |  |" << "\n" << "|        |       |  |    |    |  |" << "\n" << "|   1    |       |  |    |    |  |" << "\n" << "|________|       |__|    |    |__|" << "\n" << " \\______          ::    ###    ::        ___" << "\n" << "                  ::           ::    _______\\" << "\n" << " __________________________________ |        |" << "\n" << "/                                  \\|        |" << "\n" << "\\__________________________________/|   2    |                         |-------|                      |-------|" << "\n" << "                                    |________|                         |       |                      |       |" << "\n" << termcolor::green <<" ________"<<termcolor::white<<"                  __        \\______      __    ________    __  \\_____/  __    ________    __  \\_____/  __" << "\n" << termcolor::green<<"|        |"<<termcolor::white<<"                |  |                   |  |  |        |  |  |    |    |  |  |        |  |  |    |    |  |" << "\n" << termcolor::green<<"|        |"<<termcolor::white<<"                |  |                   |  |  |        |  |  |    |    |  |  |        |  |  |    |    |  |" << "\n" << termcolor::green<<"|   3    | "<<termcolor::white<<"               |  |                   |  |  |   4    |  |  |    |    |  |  |   5    |  |  |    |    |  |" << "\n" <<termcolor::green<< "|________|"<<termcolor::white<<"                |__|                   |__|  |________|  |__|    |    |__|  |________|  |__|    |    |__|" << "\n" << termcolor::green<<" \\______"<<termcolor::white<<"                   ::                     ::    \\______     ::    ###    ::    \\______     ::    ###    ::  ______" << "\n" << "                           ::                     ::                ::           ::                ::           :: _______\\" << "\n" << " _________________________________________________________________________________________________________________|        |" << "\n" << "/                                                                                                                 |        |" << "\n" << "\\_________________________________________________________________________________________________________________|   6    |" << "\n" << "                                                                                                                  |________|" << "\n";
+				cout << "\nConfigure containers:\n\n";
+				cout << "    Container #3:\n";
+				cout << "        Amount of free space:  ";
+				cin >> input;
+				machine->containers[1].set_space(stoi(input));
+				cout << "        How many objects should be put inside:  ";
+				cin >> input;
+				machine->containers[1].put(stoi(input));
+				system("cls");
+
+				cout << "                     |-------|" << "\n" << "                     |       |" << "\n" << " ________         __  \\_____/  __" << "\n" << "|        |       |  |    |    |  |" << "\n" << "|        |       |  |    |    |  |" << "\n" << "|   1    |       |  |    |    |  |" << "\n" << "|________|       |__|    |    |__|" << "\n" << " \\______          ::    ###    ::        ___" << "\n" << "                  ::           ::    _______\\" << "\n" << " __________________________________ |        |" << "\n" << "/                                  \\|        |" << "\n" << "\\__________________________________/|   2    |                         |-------|                      |-------|" << "\n" << "                                    |________|                         |       |                      |       |" << "\n" << " ________                  __        \\______      __   "<<termcolor::green<<" ________"<<termcolor::white<<"    __  \\_____/  __    ________    __  \\_____/  __" << "\n" << "|        |                |  |                   |  | "<<termcolor::green<<" |        |"<<termcolor::white<<"  |  |    |    |  |  |        |  |  |    |    |  |" << "\n" << "|        |                |  |                   |  |  "<<termcolor::green<<"|        |"<<termcolor::white<<"  |  |    |    |  |  |        |  |  |    |    |  |" << "\n" << "|   3    |                |  |                   |  | "<<termcolor::green<<" |   4    |"<<termcolor::white<<"  |  |    |    |  |  |   5    |  |  |    |    |  |" << "\n" << "|________|                |__|                   |__| "<<termcolor::green<<" |________| "<<termcolor::white<<" |__|    |    |__|  |________|  |__|    |    |__|" << "\n" << " \\______                   ::                     ::    "<<termcolor::green<<"\\______"<<termcolor::white<<"     ::    ###    ::    \\______     ::    ###    ::  ______" << "\n" << "                           ::                     ::                ::           ::                ::           :: _______\\" << "\n" << " _________________________________________________________________________________________________________________|        |" << "\n" << "/                                                                                                                 |        |" << "\n" << "\\_________________________________________________________________________________________________________________|   6    |" << "\n" << "                                                                                                                  |________|" << "\n";
+				cout << "\nConfigure containers:\n\n";
+				cout << "    Container #4:\n";
+				cout << "        Amount of free space:  ";
+				cin >> input;
+				machine->containers[2].set_space(stoi(input));
+				cout << "        How many objects should be put inside:  ";
+				cin >> input;
+				machine->containers[2].put(stoi(input));
+				system("cls");
+
+				cout << "                     |-------|" << "\n" << "                     |       |" << "\n" << " ________         __  \\_____/  __" << "\n" << "|        |       |  |    |    |  |" << "\n" << "|        |       |  |    |    |  |" << "\n" << "|   1    |       |  |    |    |  |" << "\n" << "|________|       |__|    |    |__|" << "\n" << " \\______          ::    ###    ::        ___" << "\n" << "                  ::           ::    _______\\" << "\n" << " __________________________________ |        |" << "\n" << "/                                  \\|        |" << "\n" << "\\__________________________________/|   2    |                         |-------|                      |-------|" << "\n" << "                                    |________|                         |       |                      |       |" << "\n" << " ________                  __        \\______      __    ________    __  \\_____/  __    "<<termcolor::green<<"________"<<termcolor::white<<"    __  \\_____/  __" << "\n" << "|        |                |  |                   |  |  |        |  |  |    |    |  |  "<<termcolor::green<<"|        | "<<termcolor::white<<" |  |    |    |  |" << "\n" << "|        |                |  |                   |  |  |        |  |  |    |    |  |  "<<termcolor::green<<"|        |"<<termcolor::white<<"  |  |    |    |  |" << "\n" << "|   3    |                |  |                   |  |  |   4    |  |  |    |    |  |  "<<termcolor::green<<"|   5    | "<<termcolor::white<<" |  |    |    |  |" << "\n" << "|________|                |__|                   |__|  |________|  |__|    |    |__| "<<termcolor::green<<" |________| "<<termcolor::white<<" |__|    |    |__|" << "\n" << " \\______                   ::                     ::    \\______     ::    ###    ::  "<<termcolor::green<<"  \\______ "<<termcolor::white<<"    ::    ###    ::  ______" << "\n" << "                           ::                     ::                ::           ::                ::           :: _______\\" << "\n" << " _________________________________________________________________________________________________________________|        |" << "\n" << "/                                                                                                                 |        |" << "\n" << "\\_________________________________________________________________________________________________________________|   6    |" << "\n" << "                                                                                                                  |________|" << "\n";
+				cout << "\nConfigure containers:\n\n";
+				cout << "    Container #5:\n";
+				cout << "        Amount of free space:  ";
+				cin >> input;
+				machine->containers[3].set_space(stoi(input));
+				cout << "        How many objects should be put inside:  ";
+				cin >> input;
+				machine->containers[3].put(stoi(input));
+				system("cls");
+
+				cout << "                     |-------|" << "\n" << "                     |       |" << "\n" << " ________         __  \\_____/  __" << "\n" << "|        |       |  |    |    |  |" << "\n" << "|        |       |  |    |    |  |" << "\n" << "|   1    |       |  |    |    |  |" << "\n" << "|________|       |__|    |    |__|" << "\n" << " \\______          ::    ###    ::        ___" << "\n" << "                  ::           ::    _______\\" << "\n" << " __________________________________ |        |" << "\n" << "/                                  \\|        |" << "\n" << "\\__________________________________/|   2    |                         |-------|                      |-------|" << "\n" << "                                    |________|                         |       |                      |       |" << "\n" << " ________                  __        \\______      __    ________    __  \\_____/  __    ________    __  \\_____/  __" << "\n" << "|        |                |  |                   |  |  |        |  |  |    |    |  |  |        |  |  |    |    |  |" << "\n" << "|        |                |  |                   |  |  |        |  |  |    |    |  |  |        |  |  |    |    |  |" << "\n" << "|   3    |                |  |                   |  |  |   4    |  |  |    |    |  |  |   5    |  |  |    |    |  |" << "\n" << "|________|                |__|                   |__|  |________|  |__|    |    |__|  |________|  |__|    |    |__|" << "\n" << " \\______                   ::                     ::    \\______     ::    ###    ::    \\______     ::    ###    :: "<<termcolor::green<<" ______"<< termcolor::white << "\n" << "                           ::                     ::                ::           ::                ::           :: "<<termcolor::green<<"_______\\"<< termcolor::white << "\n" << " _________________________________________________________________________________________________________________"<<termcolor::green<<"|        |"<< termcolor::white << "\n" << "/                                                                                                                 "<<termcolor::green<<"|        |"<< termcolor::white << "\n" << "\\_________________________________________________________________________________________________________________"<<termcolor::green<<"|   6    |"<< termcolor::white << "\n" << "                                                                                                                  "<<termcolor::green<<"|________|"<< termcolor::white << "\n";
+				cout << "\nConfigure containers:\n\n";
+				cout << "    Container #6:\n";
+				cout << "        Amount of free space:  ";
+				cin >> input;
+				machine->containers[4].set_space(stoi(input));
+				system("cls");
+
 				// Активировали линии
 				for (auto line: machine->lines) {
 					line.activate();
@@ -585,17 +646,108 @@ public:
 					}
 				}
 			}
+			else if (machine->get_mode() == 'm'){
+				cout << "\nYou've chosen manual mode.\nEnter the name of a text file with the command sequence and necessary configurations:  ";
+				string file;
+				cin >> file;
+				int i = 0;
+				int cycles;
+				ifstream in(file);
+				if (in.is_open()){
+					int data;
+					in >> data;
+					machine->containers[0].set_space(data);
+					in >> data;
+					machine->inout_containers[0].set_space(data);
+					in >> data;
+					machine->containers[1].set_space(data);
+					in >> data;
+					machine->containers[2].set_space(data);
+					in >> data;
+					machine->containers[3].set_space(data);
+					in >> data;
+					machine->containers[4].set_space(data);
+					in >> data;
+					machine->containers[0].put(data);
+					in >> data;
+					machine->containers[1].put(data);
+					in >> data;
+					machine->containers[2].put(data);
+					in >> data;
+					machine->containers[3].put(data);
+					in >> data;
+					cycles = data;
+					bool state;
+					while (true){
+						cout << "__________________________________________________|  Cycle " << ++i << "  |__________________________________________________\n";
+						configure(in);
+						machine->containers[0].take();
+						cout << "Q2 driver functioned properly. PCB is on the line" << endl;
+						configure(in);
+						configure(in);
+						if (machine->line_sensors[0].get_state()) cout << "I3 sensor was triggered => attempting to run Q3 driver" << endl;
+						configure(in);
+						if (machine->drivers[1].get_state()) cout << "Q3 driver functioned properly" << endl;
+						configure(in);
+						configure(in);
+						if (machine->line_sensors[1].get_state()) cout << "I0 sensor was triggered => attempting to run Q4 driver" << endl;
+						configure(in);
+						machine->inout_containers[0].put(1);
+						cout << "Q4 driver functioned properly. The lid of the container with the fabricated PCBs was opened\nPCB is in the container" << endl;
+						configure(in);
+						machine->containers[1].take();
+						cout << "Q6 driver functioned properly. Body is in the box on the line" << endl;
+						configure(in);
+						configure(in);
+						if (machine->line_sensors[2].get_state()) cout << "I5 sensor was triggered => attempting to run Q5 driver" << endl;
+						configure(in);
+						machine->inout_containers[0].take();
+						cout << "Q5 driver functioned properly. Fabricated PCB is in the box on the line" << endl;
+						configure(in);
+						configure(in);
+						if (machine->line_sensors[3].get_state()) cout << "I6 sensor was triggered => attempting to run Q7 driver" << endl;
+						configure(in);
+						machine->containers[2].take();
+						cout << "Q7 driver functioned properly. Display is in the box on the line" << endl;
+						configure(in);
+						configure(in);
+						if (machine->line_sensors[4].get_state()) cout << "I8 sensor was triggered => attempting to run Q8 driver" << endl;
+						configure(in);
+						if (machine->drivers[6].get_state()) cout << "Q8 driver functioned properly" << endl;
+						configure(in);
+						configure(in);
+						if (machine->line_sensors[5].get_state()) cout << "I9 sensor was triggered => attempting to run Q9 driver" << endl;
+						configure(in);
+						machine->containers[3].take();
+						cout << "Q9 driver functioned properly. Manual and warranty card is in the box on the line" << endl;
+						configure(in);
+						configure(in);
+						if (machine->line_sensors[6].get_state()) cout << "I11 sensor was triggered => attempting to run Q10 driver" << endl;
+						configure(in);
+						if (machine->drivers[8].get_state()) cout << "Q10 driver functioned properly" << endl;
+						configure(in);
+						configure(in);
+						if (machine->line_sensors[7].get_state()) cout << "I13 sensor was triggered => attempting to run Q11 driver" << endl;
+						configure(in);
+						machine->containers[4].put(1);
+						cout << "Q11 driver functioned properly. The lid of the container with finished products was opened\nFinished product is in the container.\n\n";
+						if (i == cycles) {
+							cout <<"Congrats! Program successfully completed " << cycles << " cycles." << "\n\nType 'exit' to close program or anything else to try again:  ";
+							cin >> command;
+							system("cls");
+							return;
+						}
+					}
+				}
+				in.close();
+			}
 		}
 		catch (const Error& err){
-			cout << "Error occured: " << err.get_message() << "\nType 'exit' to close program or anything else to try again:  ";
+			cout << termcolor::on_red << "\nError occured: " << termcolor::reset << err.get_message() << "\nType 'exit' to close program or anything else to try again:  ";
 			cin >> command;
 			system("cls");
 			return;
 		}
-	}
-
-	void stop(){
-
 	}
 
 	Controller(Model* machine_i){
