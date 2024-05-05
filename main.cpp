@@ -9,6 +9,7 @@ using namespace std;
 
 string command = "";
 string input = "";
+int temp_int;
 
 std::vector<std::string> split(std::string str, char delimiter) {
 	std::string tmp{""};
@@ -19,6 +20,13 @@ std::vector<std::string> split(std::string str, char delimiter) {
 	}
 	vec.push_back(tmp);
 	return vec;
+}
+
+bool is_int( string pStr ) {
+	for( int i = 0; i < pStr.size(); i++ ) {
+		if( !isdigit( pStr[ i ] ) ) return false;
+	}
+	return true;
 }
 
 class Error {
@@ -255,15 +263,23 @@ public:
 
 	void start(){
 		try {
-			if (machine->get_mode() == 'a') {
+			if (machine->get_mode() == 'a' || machine->get_mode() == 'A') {
 				cout << "                     |-------|" << "\n" << "                     |       |" << "\n" << " "<<termcolor::green<<"________"<<termcolor::white<<"         __  \\_____/  __" << "\n" << ""<<termcolor::green<<"|        |"<<termcolor::white<<"       |  |    |    |  |" << "\n" << ""<<termcolor::green<<"|        |"<<termcolor::white<<"       |  |    |    |  |" << "\n" << termcolor::green <<"|   1    |" << termcolor::white<< "       |  |    |    |  |" << "\n" << termcolor::green<<"|________|"<<termcolor::white<<"       |__|    |    |__|" << "\n" << termcolor::green<<" \\______ "<<termcolor::white<<"         ::    ###    ::        ___" << "\n" << "                  ::           ::    _______\\" << "\n" << " __________________________________ |        |" << "\n" << "/                                  \\|        |" << "\n" << "\\__________________________________/|   2    |                         |-------|                      |-------|" << "\n" << "                                    |________|                         |       |                      |       |" << "\n" << " ________                  __        \\______      __    ________    __  \\_____/  __    ________    __  \\_____/  __" << "\n" << "|        |                |  |                   |  |  |        |  |  |    |    |  |  |        |  |  |    |    |  |" << "\n" << "|        |                |  |                   |  |  |        |  |  |    |    |  |  |        |  |  |    |    |  |" << "\n" << "|   3    |                |  |                   |  |  |   4    |  |  |    |    |  |  |   5    |  |  |    |    |  |" << "\n" << "|________|                |__|                   |__|  |________|  |__|    |    |__|  |________|  |__|    |    |__|" << "\n" << " \\______                   ::                     ::    \\______     ::    ###    ::    \\______     ::    ###    ::  ______" << "\n" << "                           ::                     ::                ::           ::                ::           :: _______\\" << "\n" << " _________________________________________________________________________________________________________________|        |" << "\n" << "/                                                                                                                 |        |" << "\n" << "\\_________________________________________________________________________________________________________________|   6    |" << "\n" << "                                                                                                                  |________|" << "\n";
 				cout << "\nConfigure containers:\n\n";
 				cout << "    Container #1:\n";
 				cout << "        Amount of free space:  ";
 				cin >> input;
+				while (!is_int(input) || stoi(input) < 0){
+					cout << "        " << termcolor::on_yellow << "Incorrect input, try again" << termcolor::reset << "\n        Amount of free space:  ";
+					cin >> input;
+				}
 				machine->containers[0].set_space(stoi(input));
 				cout << "        How many objects should be put inside:  ";
 				cin >> input;
+				while (!is_int(input) || stoi(input) < 0){
+					cout << "        " << termcolor::on_yellow << "Incorrect input, try again" << termcolor::reset << "\n        How many objects should be put inside:  ";
+					cin >> input;
+				}
 				machine->containers[0].put(stoi(input));
 				system("cls");
 
@@ -272,6 +288,10 @@ public:
 				cout << "    Container #2:\n";
 				cout << "        Amount of free space:  ";
 				cin >> input;
+				while (!is_int(input) || stoi(input) < 0){
+					cout << "        " << termcolor::on_yellow << "Incorrect input, try again" << termcolor::reset << "\n        Amount of free space:  ";
+					cin >> input;
+				}
 				machine->inout_containers[0].set_space(stoi(input));
 				system("cls");
 
@@ -280,9 +300,17 @@ public:
 				cout << "    Container #3:\n";
 				cout << "        Amount of free space:  ";
 				cin >> input;
+				while (!is_int(input) || stoi(input) < 0){
+					cout << "        " << termcolor::on_yellow << "Incorrect input, try again" << termcolor::reset << "\n        Amount of free space:  ";
+					cin >> input;
+				}
 				machine->containers[1].set_space(stoi(input));
 				cout << "        How many objects should be put inside:  ";
 				cin >> input;
+				while (!is_int(input) || stoi(input) < 0){
+					cout << "        " << termcolor::on_yellow << "Incorrect input, try again" << termcolor::reset << "\n        How many objects should be put inside:  ";
+					cin >> input;
+				}
 				machine->containers[1].put(stoi(input));
 				system("cls");
 
@@ -291,9 +319,17 @@ public:
 				cout << "    Container #4:\n";
 				cout << "        Amount of free space:  ";
 				cin >> input;
+				while (!is_int(input) || stoi(input) < 0){
+					cout << "        " << termcolor::on_yellow << "Incorrect input, try again" << termcolor::reset << "\n        Amount of free space:  ";
+					cin >> input;
+				}
 				machine->containers[2].set_space(stoi(input));
 				cout << "        How many objects should be put inside:  ";
 				cin >> input;
+				while (!is_int(input) || stoi(input) < 0){
+					cout << "        " << termcolor::on_yellow << "Incorrect input, try again" << termcolor::reset << "\n        How many objects should be put inside:  ";
+					cin >> input;
+				}
 				machine->containers[2].put(stoi(input));
 				system("cls");
 
@@ -302,9 +338,17 @@ public:
 				cout << "    Container #5:\n";
 				cout << "        Amount of free space:  ";
 				cin >> input;
+				while (!is_int(input) || stoi(input) < 0){
+					cout << "        " << termcolor::on_yellow << "Incorrect input, try again" << termcolor::reset << "\n        Amount of free space:  ";
+					cin >> input;
+				}
 				machine->containers[3].set_space(stoi(input));
 				cout << "        How many objects should be put inside:  ";
 				cin >> input;
+				while (!is_int(input) || stoi(input) < 0){
+					cout << "        " << termcolor::on_yellow << "Incorrect input, try again" << termcolor::reset << "\n        How many objects should be put inside:  ";
+					cin >> input;
+				}
 				machine->containers[3].put(stoi(input));
 				system("cls");
 
@@ -313,6 +357,10 @@ public:
 				cout << "    Container #6:\n";
 				cout << "        Amount of free space:  ";
 				cin >> input;
+				while (!is_int(input) || stoi(input) < 0){
+					cout << "        " << termcolor::on_yellow << "Incorrect input, try again" << termcolor::reset << "\n        Amount of free space:  ";
+					cin >> input;
+				}
 				machine->containers[4].set_space(stoi(input));
 				system("cls");
 
@@ -323,6 +371,10 @@ public:
 
 				cout << "\nWould you like to turn something off? (y/n):  ";
 				cin >> input;
+				while (!(input == "y" || input == "Y" || input == "n" || input == "N")){
+					cout << "" << termcolor::on_yellow << "Incorrect input, try again" << termcolor::reset << "\nWould you like to turn something off? (y/n):  ";
+					cin >> input;
+				}
 				if (input == "y" || input == "Y"){
 					system("cls");
 					string drivers_scheme = "                     |-------|\n                     |   1   |\n ________         __  \\_____/  __\n|        |       |  |    |    |  |\n|        |       |  |    |    |  |\n|        |       |  |    |    |  |\n|________|       |__|    |    |__|\n0\\______          ::    ###    ::        ___\n                  ::           ::    _______\\2\n __________________________________ |        |\n/                                  \\|        | \n\\__________________________________/|        |                         |-------|                      |-------|\n                                    |________|                         |   6   |                      |   8   |\n ________                  __       3\\______      __    ________    __  \\_____/  __    ________    __  \\_____/  __\n|        |                |  |                   |  |  |        |  |  |    |    |  |  |        |  |  |    |    |  |\n|        |                |  |                   |  |  |        |  |  |    |    |  |  |        |  |  |    |    |  |\n|        |                |  |                   |  |  |        |  |  |    |    |  |  |        |  |  |    |    |  |\n|________|                |__|                   |__|  |________|  |__|    |    |__|  |________|  |__|    |    |__|\n4\\______                   ::                     ::   5\\______     ::    ###    ::   7\\______     ::    ###    ::  ______\n                           ::                     ::                ::           ::                ::           :: _______\\9\n _________________________________________________________________________________________________________________|        |\n/                                                                                                                 |        | \n\\_________________________________________________________________________________________________________________|        |\n                                                                                                                  |________|\n";
@@ -346,7 +398,11 @@ public:
 					while (command != "n" && command != "N"){
 						cout << "\nWhat exactly should be turned off? ( d(driver) / l(line) / sc(sensor on a container) / sl(sensor on a line):  ";
 						cin >> input;
-						if (input == "d"){
+						while (!(input == "d" || input == "D" || input == "l" || input == "L" || input == "sc" || input == "Sc" || input == "sl" || input == "Sl" || input == "SC" || input == "SL")){
+							cout << "" << termcolor::on_yellow << "Incorrect input, try again" << termcolor::reset << "\nWhat exactly should be turned off? ( d(driver) / l(line) / sc(sensor on a container) / sl(sensor on a line):  ";
+							cin >> input;
+						}
+						if (input == "d" || input == "D"){
 							system("cls");
 							for (int i = 0; i < drivers_scheme_vec.size(); i++){
 								if (i == 0) cout << drivers_scheme_vec[i];
@@ -354,6 +410,10 @@ public:
 							}
 							cout << "\nNumber of driver which should be turned off:  ";
 							cin >> input;
+							while (!is_int(input) || stoi(input) < 0 || stoi(input) > 9){
+								cout << "" << termcolor::on_yellow << "Incorrect input, try again" << termcolor::reset << "\nNumber of driver which should be turned off:  ";
+								cin >> input;
+							}
 							machine->drivers[stoi(input)].deactivate();
 							temp = split(drivers_scheme, input[0]);
 							drivers_scheme_vec.clear();
@@ -380,10 +440,14 @@ public:
 							}
 							cout << "\nWould you like to turn off something else? (y/n)  ";
 							cin >> command;
+							while (!(command == "y" || command == "Y" || command == "n" || command == "N")){
+								cout << "" << termcolor::on_yellow << "Incorrect input, try again" << termcolor::reset << "\nWould you like to turn off something else? (y/n)  ";
+								cin >> input;
+							}
 							system("cls");
 						}
 
-						else if (input == "l"){
+						else if (input == "l" || input == "L"){
 							system("cls");
 							for (int i = 0; i < lines_scheme_vec.size(); i++){
 								if (i == 0) cout << lines_scheme_vec[i];
@@ -391,7 +455,11 @@ public:
 							}
 							cout << "\nNumber of line which should be disactivated:  ";
 							cin >> input;
-							machine->lines[stoi(input)].deactivate();
+							while (!is_int(input) || stoi(input) < 1 || stoi(input) > 2){
+								cout << "" << termcolor::on_yellow << "Incorrect input, try again" << termcolor::reset << "\nNumber of line which should be disactivated:  ";
+								cin >> input;
+							}
+							machine->lines[stoi(input)-1].deactivate();
 							temp = split(lines_scheme, input[0]);
 							lines_scheme_vec.clear();
 							for (auto it : temp){
@@ -417,10 +485,14 @@ public:
 							}
 							cout << "\nWould you like to turn off something else? (y/n)  ";
 							cin >> command;
+							while (!(command == "y" || command == "Y" || command == "n" || command == "N")){
+								cout << "" << termcolor::on_yellow << "Incorrect input, try again" << termcolor::reset << "\nWould you like to turn off something else? (y/n)  ";
+								cin >> input;
+							}
 							system("cls");
 						}
 
-						else if (input == "sc"){
+						else if (input == "sc" || input == "Sc" || input == "SC"){
 							system("cls");
 							for (int i = 0; i < sc_scheme_vec.size(); i++){
 								if (i == 0) cout << sc_scheme_vec[i];
@@ -428,6 +500,10 @@ public:
 							}
 							cout << "\nNumber of container's sensor which should be disactivated:  ";
 							cin >> input;
+							while (!is_int(input) || stoi(input) < 0 || stoi(input) > 4){
+								cout << "" << termcolor::on_yellow << "Incorrect input, try again" << termcolor::reset << "\nNumber of container's sensor which should be disactivated:  ";
+								cin >> input;
+							}
 							machine->sensors[stoi(input)].set_state(false);
 							temp = split(sc_scheme, input[0]);
 							sc_scheme_vec.clear();
@@ -454,10 +530,14 @@ public:
 							}
 							cout << "\nWould you like to turn off something else? (y/n)  ";
 							cin >> command;
+							while (!(command == "y" || command == "Y" || command == "n" || command == "N")){
+								cout << "" << termcolor::on_yellow << "Incorrect input, try again" << termcolor::reset << "\nWould you like to turn off something else? (y/n)  ";
+								cin >> input;
+							}
 							system("cls");
 						}
 
-						else if (input == "sl"){
+						else if (input == "sl" || input == "Sl" || input == "SL"){
 							system("cls");
 							for (int i = 0; i < sl_scheme_vec.size(); i++){
 								if (i == 0) cout << sl_scheme_vec[i];
@@ -465,6 +545,10 @@ public:
 							}
 							cout << "\nNumber of line sensor which should be disactivated:  ";
 							cin >> input;
+							while (!is_int(input) || stoi(input) < 0 || stoi(input) > 7){
+								cout << "" << termcolor::on_yellow << "Incorrect input, try again" << termcolor::reset << "\nNumber of line sensor which should be disactivated:  ";
+								cin >> input;
+							}
 							machine->sensors[stoi(input)].set_state(false);
 							temp = split(sl_scheme, input[0]);
 							sl_scheme_vec.clear();
@@ -491,6 +575,10 @@ public:
 							}
 							cout << "\nWould you like to turn off something else? (y/n)  ";
 							cin >> command;
+							while (!(command == "y" || command == "Y" || command == "n" || command == "N")){
+								cout << "" << termcolor::on_yellow << "Incorrect input, try again" << termcolor::reset << "\nWould you like to turn off something else? (y/n)  ";
+								cin >> input;
+							}
 							system("cls");
 						}
 					}
@@ -567,9 +655,14 @@ public:
 				}else system("cls");
 
 				cout << "\nSet system speed (1 / 2 / 3):  ";
-				int speed, delay;
+				int delay;
+				string speed;
 				cin >> speed;
-				switch (speed) {
+				while (!is_int(speed) || stoi(speed) < 1 || stoi(speed) > 3){
+					cout << "" << termcolor::on_yellow << "Incorrect input, try again" << termcolor::reset << "\nSet system speed (1 / 2 / 3):  ";
+					cin >> speed;
+				}
+				switch (stoi(speed)) {
 					case 1 :
 						delay = 1000;
 						break;
@@ -581,8 +674,12 @@ public:
 						break;
 				}
 				cout << "\nHow many cycles the programme is supposed to complete:  ";
-				int cycles;
+				string cycles;
 				cin >> cycles;
+				while (!is_int(cycles) || stoi(cycles) < 1){
+					cout << "" << termcolor::on_yellow << "Incorrect input, try again" << termcolor::reset << "\nHow many cycles the programme is supposed to complete:  ";
+					cin >> cycles;
+				}
 
 				system("cls");
 				cout << "\nProduction may be stopped due to an error or when you press any key. \nIn the second case, attempts will be made to complete the started circle, and only then will the programme stop. \n\nPress any key to start";
@@ -638,7 +735,7 @@ public:
 					Sleep(delay);
 					machine->containers[4].put(1);
 					cout << "Finished product is in the container.\n\n";
-					if (i == cycles) {
+					if (i == stoi(cycles)) {
 						cout <<"Congrats! Program successfully completed " << cycles << " cycles." << "\n\nType 'exit' to close program or anything else to try again:  ";
 						cin >> command;
 						system("cls");
@@ -646,7 +743,7 @@ public:
 					}
 				}
 			}
-			else if (machine->get_mode() == 'm'){
+			else if (machine->get_mode() == 'm' || machine->get_mode() == 'M'){
 				cout << "\nYou've chosen manual mode.\nEnter the name of a text file with the command sequence and necessary configurations:  ";
 				string file;
 				cin >> file;
@@ -739,11 +836,14 @@ public:
 						}
 					}
 				}
+				else{
+					cout << termcolor::on_yellow << "Error while opening file, try again" << termcolor::reset << "\n";
+				}
 				in.close();
 			}
 		}
 		catch (const Error& err){
-			cout << termcolor::on_red << "\nError occured: " << termcolor::reset << err.get_message() << "\nType 'exit' to close program or anything else to try again:  ";
+			cout << termcolor::on_red << "\nError occured:" << termcolor::reset << "  " <<  err.get_message() << "\nType 'exit' to close program or anything else to try again:  ";
 			cin >> command;
 			system("cls");
 			return;
@@ -759,6 +859,10 @@ int main(){
 	while (command != "exit") {
 		cout << "Select operating mode: a(auto) / m(manual):  ";
 		cin >> input;
+		while (!(input == "a" || input == "A" || input == "m" || input == "M")){
+			cout << "" << termcolor::on_yellow << "Incorrect input, try again" << termcolor::reset << "\nSelect operating mode: a(auto) / m(manual):  ";
+			cin >> input;
+		}
 		system("cls");
 		Model factory(input[0]);
 		Controller controller(&factory);
